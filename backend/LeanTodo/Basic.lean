@@ -118,6 +118,11 @@ theorem toggle_involutive (l : TodoList) (tid : Nat) : (l.toggle tid).toggle tid
     | true => simp [h, Bool.not_not]
     | false => simp [h]
 
+theorem remove_idempotent (l : TodoList) (tid : Nat) :
+    (l.remove tid).remove tid = l.remove tid := by
+  obtain ⟨items, nextId⟩ := l
+  simp only [remove, List.filter_filter, Bool.and_self]
+
 def step (l : TodoList) : Command → TodoList
   | .add title => l.add title
   | .toggle tid => l.toggle tid
