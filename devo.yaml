@@ -8,4 +8,4 @@ tasks:
     cmd: nix develop --command bash -c 'cd backend && lake build && lake exe todo'
 
   - id: frontend
-    cmd: nix develop --command bash -c 'cd frontend && npm run dev'
+    cmd: nix develop --command bash -c 'cd frontend && portless ${SLUG:+$SLUG.}lean-todo ./node_modules/.bin/vite dev'
