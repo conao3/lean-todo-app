@@ -1,21 +1,18 @@
 import LeanTodo
+import Lean.Data.Json
 
-partial def loop (stdin : IO.FS.Stream) : IO Unit := do
-  IO.print "todo> "
-  (← IO.getStdout).flush
-  let line ← stdin.getLine
-  if line.length == 0 then
-    IO.println ""
-    IO.println "bye"
-  else
-    let cmd := line.trimAscii.toString
-    if cmd == "" then
-      loop stdin
-    else
-      IO.println s!"received: {cmd}"
-      loop stdin
+open Lean LeanTodo
+
+def errorJson (msg : String) : Json :=
+  Json.mkObj [("ok", Json.bool false), ("error", Json.str msg)]
 
 def main : IO Unit := do
-  IO.println "lean-todo backend running"
-  IO.println "type a line and press enter (Ctrl-D to quit)"
-  loop (← IO.getStdin)
+  let input ← (← IO.getStdin).readToEnd
+  let out : Json :=
+    match Json.parse input with
+    | .error e => errorJson s!"parse error: {e}"
+    | .ok j =>
+      match (fromJson? j : Except String Request) with
+      | .error e => errorJson e
+      | .ok req => Json.mkObj [("ok", Json.bool true), ("state", toJson (req.state.step req.command))]
+  IO.println out.compress
