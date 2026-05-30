@@ -99,5 +99,24 @@ theorem step_valid (l : TodoList) (c : Command) (h : l.Valid) : (l.step c).Valid
   | toggle tid => exact toggle_valid l tid h
   | remove tid => exact remove_valid l tid h
 
+instance (l : TodoList) : Decidable l.Valid :=
+  decidable_of_iff
+    ((∀ t ∈ l.items, t.id < l.nextId) ∧ l.ids.Nodup)
+    ⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.ids_lt, h.nodup⟩⟩
+
 end TodoList
+
+def VTodoList := { l : TodoList // l.Valid }
+
+namespace VTodoList
+
+def empty : VTodoList := ⟨TodoList.empty, TodoList.empty_valid⟩
+
+def step (l : VTodoList) (c : Command) : VTodoList :=
+  ⟨l.val.step c, TodoList.step_valid l.val c l.property⟩
+
+def ofTodoList? (l : TodoList) : Option VTodoList :=
+  if h : l.Valid then some ⟨l, h⟩ else none
+
+end VTodoList
 end LeanTodo

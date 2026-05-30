@@ -14,5 +14,8 @@ def main : IO Unit := do
     | .ok j =>
       match (fromJson? j : Except String Request) with
       | .error e => errorJson e
-      | .ok req => Json.mkObj [("ok", Json.bool true), ("state", toJson (req.state.step req.command))]
+      | .ok req =>
+        match VTodoList.ofTodoList? req.state with
+        | none => errorJson "invalid state: violates the verified invariant"
+        | some vl => Json.mkObj [("ok", Json.bool true), ("state", toJson (vl.step req.command).val)]
   IO.println out.compress
