@@ -104,6 +104,20 @@ theorem remove_removes (l : TodoList) (tid : Nat) : tid ∉ (l.remove tid).ids :
   rw [hid] at ht
   simp at ht
 
+theorem toggle_involutive (l : TodoList) (tid : Nat) : (l.toggle tid).toggle tid = l := by
+  obtain ⟨items, nextId⟩ := l
+  simp only [toggle]
+  congr 1
+  induction items with
+  | nil => rfl
+  | cons a as ih =>
+    simp only [List.map_cons]
+    rw [ih]
+    congr 1
+    cases h : a.id == tid with
+    | true => simp [h, Bool.not_not]
+    | false => simp [h]
+
 def step (l : TodoList) : Command → TodoList
   | .add title => l.add title
   | .toggle tid => l.toggle tid
