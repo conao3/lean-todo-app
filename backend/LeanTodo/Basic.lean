@@ -88,6 +88,22 @@ theorem remove_valid (l : TodoList) (tid : Nat) (h : l.Valid) : (l.remove tid).V
       exact hsub.map (·.id)
     exact hids.nodup h.nodup
 
+theorem add_length (l : TodoList) (title : String) :
+    (l.add title).items.length = l.items.length + 1 := by
+  simp [add]
+
+theorem toggle_length (l : TodoList) (tid : Nat) :
+    (l.toggle tid).items.length = l.items.length := by
+  simp [toggle]
+
+theorem remove_removes (l : TodoList) (tid : Nat) : tid ∉ (l.remove tid).ids := by
+  intro hmem
+  simp only [remove, ids, List.mem_map] at hmem
+  obtain ⟨t, ht, hid⟩ := hmem
+  simp only [List.mem_filter] at ht
+  rw [hid] at ht
+  simp at ht
+
 def step (l : TodoList) : Command → TodoList
   | .add title => l.add title
   | .toggle tid => l.toggle tid
