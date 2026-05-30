@@ -1,0 +1,11 @@
+session: lean-todo-app${SLUG:+-$SLUG}
+
+inherit_env:
+  - SLUG
+
+tasks:
+  - id: backend
+    cmd: nix develop --command bash -c 'cd backend && lake build && lake exe todo'
+
+  - id: frontend
+    cmd: nix develop --command bash -c 'cd frontend && npm run dev'

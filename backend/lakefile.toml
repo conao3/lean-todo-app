@@ -1,6 +1,10 @@
 name = "lean_todo"
 version = "0.1.0"
-defaultTargets = ["LeanTodo"]
+defaultTargets = ["LeanTodo", "todo"]
 
 [[lean_lib]]
 name = "LeanTodo"
+
+[[lean_exe]]
+name = "todo"
+root = "Main"
