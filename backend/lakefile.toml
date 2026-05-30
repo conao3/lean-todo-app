@@ -1,0 +1,6 @@
+name = "lean_todo"
+version = "0.1.0"
+defaultTargets = ["LeanTodo"]
+
+[[lean_lib]]
+name = "LeanTodo"
