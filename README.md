@@ -1,25 +1,45 @@
 # lean-todo-app
 
-Lean 4 で検証した Todo の状態遷移コアと、TanStack Start + React のフロントエンドで構成する Todo アプリ。
+A Todo app whose state-transition core is **verified in Lean 4**, with a TanStack Start + React frontend.
 
-## アーキテクチャ
+## Architecture
 
 ```
-frontend/   TanStack Start + React。UI と HTTP を担う
-backend/    Lean 4 (lake)。Todo の状態・遷移・不変条件を定義し証明する
+frontend/   TanStack Start + React: UI and HTTP
+backend/    Lean 4 (lake): defines the Todo state machine and proves its invariants
 ```
 
-Todo リストの状態と各操作 (追加・完了切り替え・削除) を Lean 4 で状態機械として定義し、「不正な状態に遷移しない」性質を証明する。フロントエンドは状態を表示し、操作を発行する。
+The Todo list state and each operation (add / toggle / remove) are defined as a state machine in Lean 4, and the property "no operation ever reaches an invalid state" is proved. The Lean core is exposed as a JSON one-shot CLI; a TanStack Start server function spawns it, so only the proven transition function mutates state. The frontend displays state and issues commands.
 
-## 開発環境
+## Proven properties
 
-flake の devShell に lean4 (lake 同梱)・Node.js を固定している。
+The invariant `Valid` says every todo id is `< nextId` and ids are unique (so deleted ids are never reused).
+
+```
+-- Safety: every operation preserves the Valid invariant
+empty_valid / add_valid / toggle_valid / remove_valid / step_valid
+
+-- Functional correctness
+add_length       (l.add title).items.length = l.items.length + 1
+toggle_length    toggle preserves the item count
+remove_removes   the removed id is gone from the list
+
+-- Algebraic properties
+toggle_involutive  toggling the same id twice returns the original list
+remove_idempotent  removing twice equals removing once
+```
+
+`lake build` succeeding means these hold for all inputs, checked at compile time.
+
+## Development environment
+
+The flake devShell pins lean4 (with lake) and Node.js.
 
 ```sh
 nix develop
 ```
 
-direnv を使う場合は `.envrc.example` を `.envrc` にコピーする。
+With direnv, copy `.envrc.example` to `.envrc`. `devo.yaml` launches backend + frontend together (see `devo run`); the frontend is served via portless at `https://lean-todo.localhost`.
 
 ## backend (Lean 4)
 
