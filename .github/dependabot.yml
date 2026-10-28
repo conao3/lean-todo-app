@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/frontend"
+    schedule:
+      interval: weekly
+    groups:
+      npm-minor-patch:
+        update-types: [minor, patch]
