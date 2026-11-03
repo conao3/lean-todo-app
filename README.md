@@ -39,7 +39,7 @@ The flake devShell pins lean4 (with lake) and Node.js.
 nix develop
 ```
 
-With direnv, copy `.envrc.example` to `.envrc`. `devo.yaml` launches backend + frontend together (see `devo run`); the frontend is served via portless at `https://lean-todo.localhost`.
+With direnv, copy `.envrc.example` to `.envrc`. `devo.yaml` launches backend + frontend together (see `devo session start-session`); the frontend is served via portless at `https://lean-todo.localhost`.
 
 ## backend (Lean 4)
 
