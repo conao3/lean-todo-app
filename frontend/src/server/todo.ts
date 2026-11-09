@@ -28,7 +28,7 @@ function runLean(command: Command): Promise<TodoList> {
 export const getTodos = createServerFn({ method: 'GET' }).handler(async () => state)
 
 export const applyCommand = createServerFn({ method: 'POST' })
-  .inputValidator((cmd: Command) => cmd)
+  .validator((cmd: Command) => cmd)
   .handler(async ({ data }) => {
     state = await runLean(data)
     return state
