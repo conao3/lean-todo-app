@@ -2,6 +2,10 @@
 
 A Todo app whose state-transition core is **verified in Lean 4**, with a TanStack Start + React frontend.
 
+<img src="images/todo.png" width="832" alt="The lean-todo screen: an input to add a todo, and a list with two open and two completed items">
+
+The screenshot shows the app with sample data.
+
 ## Architecture
 
 ```
