@@ -1,4 +1,12 @@
-# lean-todo-app
+<p align="center"><img src="docs/assets/banner.png" alt="lean-todo-app: A Todo app with a Lean 4-verified state-transition core and a TanStack Start + React frontend" width="880"></p>
+
+<p align="center"><strong>A Todo app with a Lean 4-verified state-transition core and a TanStack Start + React frontend</strong></p>
+
+<p align="center"><a href="LICENSE"><img src="https://img.shields.io/github/license/conao3/lean-todo-app" alt="License"></a> <a href="https://github.com/conao3/lean-todo-app/stargazers"><img src="https://img.shields.io/github/stars/conao3/lean-todo-app?style=flat" alt="GitHub stars"></a></p>
+
+<p align="center"><a href="#architecture">Architecture</a> | <a href="#proven-properties">Proven properties</a> | <a href="#development-environment">Development environment</a> | <a href="#backend-lean-4">Backend</a> | <a href="#frontend-tanstack-start">Frontend</a></p>
+
+<h1>lean-todo-app</h1>
 
 A Todo app whose state-transition core is **verified in Lean 4**, with a TanStack Start + React frontend.
 
